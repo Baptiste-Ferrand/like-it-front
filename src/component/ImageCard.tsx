@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { FaHeart } from 'react-icons/fa';
 import axiosInstance from '../utils/auth/axiosInstance';
+import { useAuth } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 
 interface ImageCardProps {
   imageUrl: string;
@@ -10,6 +12,8 @@ interface ImageCardProps {
 }
 
 export default function ImageCard({ imageUrl, initialLikes, initiallyLiked, imageId }: ImageCardProps) {
+  const { isAuthenticated, setAuthenticated } = useAuth();
+
   const [liked, setLiked] = useState(initiallyLiked);
   const [likes, setLikes] = useState(initialLikes);
   const [loading, setLoading] = useState(false);
@@ -17,7 +21,8 @@ export default function ImageCard({ imageUrl, initialLikes, initiallyLiked, imag
   const [hearts, setHearts] = useState<number[]>([]);
 
   const toggleLike = async () => {
-    if (loading) return;
+    if (loading || !isAuthenticated) return;
+
     setLoading(true);
 
     try {
@@ -29,8 +34,14 @@ export default function ImageCard({ imageUrl, initialLikes, initiallyLiked, imag
       setAnimating(true);
       setHearts(prev => [...prev, Date.now()]);
       setTimeout(() => setAnimating(false), 300);
-    } catch (error) {
-      console.error('Erreur lors du like/dislike :', error);
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        setAuthenticated(false);
+        toast.error("Votre session a expiré. Veuillez vous reconnecter.");
+      } else {
+        console.error('Erreur lors du like/dislike :', error);
+        toast.error("Impossible de liker l'image.");
+      }
     } finally {
       setLoading(false);
     }
@@ -59,8 +70,10 @@ export default function ImageCard({ imageUrl, initialLikes, initiallyLiked, imag
       ))}
       <button
         onClick={toggleLike}
-        disabled={loading}
-        className="absolute bottom-2 right-2 px-3 py-2 flex items-center gap-1 rounded-full bg-white dark:bg-gray-700 shadow hover:scale-110 transition-transform"
+        disabled={loading || !isAuthenticated}
+        className={`absolute bottom-2 right-2 px-3 py-2 flex items-center gap-1 rounded-full shadow transition-transform ${
+          isAuthenticated ? 'bg-white dark:bg-gray-700 hover:scale-110' : 'bg-gray-200 dark:bg-gray-600 cursor-not-allowed'
+        }`}
       >
         <FaHeart className={`w-5 h-5 ${liked ? 'text-red-600' : 'text-gray-400'}`} />
         <span className="text-sm text-gray-700 dark:text-gray-300">{likes}</span>

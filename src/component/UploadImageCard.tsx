@@ -1,6 +1,8 @@
 import { Modal, Button, ModalBody, ModalHeader } from 'flowbite-react';
 import { useState } from 'react';
 import axiosInstance from '../utils/auth/axiosInstance';
+import { toast } from 'react-toastify';
+import { useAuth } from '../context/AuthContext';
 
 interface UploadImageModalProps {
   open: boolean;
@@ -35,29 +37,35 @@ export default function UploadImageModal({ open, onClose, onImageAdded }: Upload
     setFile(null);
   };
 
+  const { setAuthenticated } = useAuth();
+
   const handleValidate = async () => {
-    if (!file) return;
+  if (!file) return;
 
-    const formData = new FormData();
-    formData.append('file', file);
+  const formData = new FormData();
+  formData.append('file', file);
 
-    try {
-      await axiosInstance.post('/images/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+  try {
+    await axiosInstance.post('/images/upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
 
-      // Réinitialise et ferme
-      setPreview(null);
-      setFile(null);
-      onClose();
+    setPreview(null);
+    setFile(null);
+    onClose(); 
+    onImageAdded(); 
 
-      // 🔁 Déclenche le callback pour refetch
-      onImageAdded();
-
-    } catch (error) {
-      console.error("Erreur lors de l'upload de l'image :", error);
+  } catch (error: any) {
+    if (error.response?.status === 401) {
+      setAuthenticated(false);
+      onClose(); 
+      toast.error("Votre session a expiré. Veuillez vous reconnecter.");
+    } else {
+      console.error("Erreur d'upload :", error);
+      toast.error("Une erreur est survenue lors de l'envoi de l'image.");
     }
-  };
+  }
+};
 
   return (
     <Modal show={open} onClose={onClose} size="lg">
