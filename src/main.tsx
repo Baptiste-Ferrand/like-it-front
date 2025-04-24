@@ -8,6 +8,8 @@ attachTokenToAxios();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <AppRouter />
+    <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+      <AppRouter />
+    </div>
   </React.StrictMode>,
 );
