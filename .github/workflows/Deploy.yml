@@ -76,31 +76,13 @@ jobs:
             echo "env=pre-prod" >> $GITHUB_OUTPUT
           fi
 
-      # - name: Créer fichier .env
-      #   run: |
-      #       cat <<EOF > .env
-      #       # ========================
-      #       # 📦 ENVIRONNEMENT
-      #       # ========================
-      #       ENV=${{ steps.env.outputs.env }}
-      #       # ========================
-      #       # 🔐 AUTH & DATABASE
-      #       # ========================
-      #       SECRET_KEY=${{ secrets.SECRET_KEY }}
-      #       BDD_NAME=${{ secrets.BDD_NAME }}
-      #       BDD_USER=${{ secrets.BDD_USER }}
-      #       BDD_PASSWORD=${{ secrets.BDD_PASSWORD }}
-      #       DATABASE_URL=${{ vars.DATABASE_URL}}
-            
-      #       # ========================
-      #       # ☁️ MINIO
-      #       # ========================
-      #       MINIO_ACCESS_KEY=${{ secrets.MINIO_ACCESS_KEY }}
-      #       MINIO_SECRET_KEY=${{ secrets.MINIO_SECRET_KEY }}
-      #       MINIO_ENDPOINT=${{ vars.MINIO_ENDPOINT }}
-      #       MINIO_PUBLIC_URL=${{ vars.MINIO_PUBLIC_URL }}
-      #       MINIO_BUCKET=${{ vars.MINIO_BUCKET }}
-      #       EOF
+      - name: Créer fichier .env
+        run: |
+            cat <<EOF > .env
+            # ========================
+            # 📦 ENVIRONNEMENT
+            # ========================
+            ENV=${{ steps.env.outputs.env }}
 
       - name: Préparer clé SSH
         run: |
@@ -117,7 +99,8 @@ jobs:
         run: |
           run: |
           # Copier les fichiers dans le dossier de l'environnement
-          scp -i private_key.pem -o StrictHostKeyChecking=no docker-compose.yml \
+          scp -i private_key.pem -o StrictHostKeyChecking=no .env \
+            docker-compose.yml \
             ${{ secrets.RASPBERRY_USER }}@${{ secrets.RASPBERRY_HOST }}:~/front/${{ steps.env.outputs.env }}/
 
           # Copier le fichier front.conf dans le dossier nginx dédié
