@@ -11,7 +11,11 @@ export function getToken() {
   return Cookies.get(TOKEN_KEY);
 }
 
-export function attachTokenToAxios() {
+export function removeToken() {
+  Cookies.remove(TOKEN_KEY);
+}
+
+export function attachTokenToAxios(onUnauthorized: () => void) {
   axiosInstance.interceptors.request.use(config => {
     const token = getToken();
     if (token) {
@@ -19,4 +23,15 @@ export function attachTokenToAxios() {
     }
     return config;
   });
+
+  axiosInstance.interceptors.response.use(
+    response => response,
+    error => {
+      if (error.response?.status === 401) {
+        removeToken(); 
+        onUnauthorized(); 
+      }
+      return Promise.reject(error);
+    }
+  );
 }
