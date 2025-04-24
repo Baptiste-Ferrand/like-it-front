@@ -10,7 +10,7 @@ interface ImageData {
 }
 
 interface LandingPageProps {
-  imageAddedKey: number; // 👈 reçu depuis Layout
+  imageAddedKey?: number;
 }
 
 export default function LandingPage({ imageAddedKey }: LandingPageProps) {
