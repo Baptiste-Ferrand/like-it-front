@@ -20,7 +20,6 @@ export default function Header({ onAddImage }: { onAddImage: () => void }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
-  // Handle theme change
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
@@ -34,7 +33,6 @@ export default function Header({ onAddImage }: { onAddImage: () => void }) {
   const handleLogout = () => {
     setToken('');
     setAuthenticated(false);
-    navigate('/login'); // tu peux le retirer si tu veux juste changer l'état
   };
 
   const handleMyImage = () => {
