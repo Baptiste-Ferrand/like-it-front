@@ -3,7 +3,7 @@ import Layout from '../component/Layout';
 import LandingPage from '../page/LandingPage';
 // import AboutPage from '../page/AboutPage';
 // import ContactPage from '../page/ContactPage';
-// import LoginPage from '../page/LoginPage';
+import LoginPage from '../page/LoginPage';
 import RegisterPage from '../page/RegisterPage';
 
 export default function AppRouter() {
@@ -15,7 +15,7 @@ export default function AppRouter() {
         {/* <Route path="/contact" element={<Layout><ContactPage /></Layout>} /> */}
 
         {/* Routes sans layout, par exemple pour l'authentification */}
-        {/* <Route path="/login" element={<LoginPage />} /> */}
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
       </Routes>
     </Router>
