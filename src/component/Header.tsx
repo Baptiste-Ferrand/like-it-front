@@ -38,7 +38,7 @@ export default function Header() {
           <div className="ml-4">
             <img
               className="w-10 h-10 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
-              src="/docs/images/people/profile-picture-5.jpg"
+              src="https://minio.coak.fr/like-it-pp/f3b5a10aaefdad91fec29ae6dad5ff92.jpg"
               alt="Avatar"
             />
           </div>
