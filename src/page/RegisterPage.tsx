@@ -36,9 +36,10 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900">
-      <div className="w-full max-w-sm p-4">
-        <form onSubmit={handleSubmit} className="space-y-5">
+    <div className="min-h-screen flex items-center justify-center dark:bg-gray-900">
+      <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <h5 className="text-xl font-medium text-gray-900 dark:text-white">Créer un compte</h5>
           <div>
             <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
             <input
@@ -46,7 +47,7 @@ export default function RegisterPage() {
               id="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
-              className={`shadow-xs bg-gray-50 border text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white ${!isEmailValid && email ? 'border-red-500 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'} focus:ring-blue-500 focus:border-blue-500`}
+              className={`bg-gray-50 border text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:placeholder-gray-400 dark:text-white ${!isEmailValid && email ? 'border-red-500 dark:border-red-500' : 'border-gray-300 dark:border-gray-500'} focus:ring-blue-500 focus:border-blue-500`}
               placeholder="name@flowbite.com"
             />
             {!isEmailValid && email && (
@@ -60,7 +61,7 @@ export default function RegisterPage() {
               id="password"
               value={password}
               onChange={e => setPassword(e.target.value)}
-              className={`shadow-xs bg-gray-50 border text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white ${!isPasswordValid && password ? 'border-red-500 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'} focus:ring-blue-500 focus:border-blue-500`}
+              className={`bg-gray-50 border text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:placeholder-gray-400 dark:text-white ${!isPasswordValid && password ? 'border-red-500 dark:border-red-500' : 'border-gray-300 dark:border-gray-500'} focus:ring-blue-500 focus:border-blue-500`}
             />
             {!isPasswordValid && password && (
               <p className="mt-1 text-sm text-red-600 dark:text-red-400">Le mot de passe doit contenir au moins 10 caractères.</p>
@@ -73,7 +74,7 @@ export default function RegisterPage() {
               id="repeat-password"
               value={repeatPassword}
               onChange={e => setRepeatPassword(e.target.value)}
-              className={`shadow-xs bg-gray-50 border text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white ${!passwordsMatch && repeatPassword ? 'border-red-500 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'} focus:ring-blue-500 focus:border-blue-500`}
+              className={`bg-gray-50 border text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:placeholder-gray-400 dark:text-white ${!passwordsMatch && repeatPassword ? 'border-red-500 dark:border-red-500' : 'border-gray-300 dark:border-gray-500'} focus:ring-blue-500 focus:border-blue-500`}
             />
             {!passwordsMatch && repeatPassword && (
               <p className="mt-1 text-sm text-red-600 dark:text-red-400">Les mots de passe ne correspondent pas.</p>
@@ -87,17 +88,15 @@ export default function RegisterPage() {
               J'accepte les <a href="#" className="text-blue-600 hover:underline dark:text-blue-500">conditions d'utilisation</a>
             </label>
           </div>
-          <div className="flex justify-between items-center">
-            <Link to="/login" className="text-sm text-gray-500 hover:underline dark:text-gray-400">
-              Déjà un compte ?
-            </Link>
-            <button
-              type="submit"
-              disabled={!isFormValid}
-              className="text-white bg-blue-700 hover:bg-blue-800 disabled:bg-gray-400 disabled:cursor-not-allowed focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Créer un compte
-            </button>
+          <button
+            type="submit"
+            disabled={!isFormValid}
+            className="w-full text-white bg-blue-700 hover:bg-blue-800 disabled:bg-gray-400 disabled:cursor-not-allowed focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Créer un compte
+          </button>
+          <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
+            Déjà un compte ? <Link to="/login" className="text-blue-700 hover:underline dark:text-blue-500">Connexion</Link>
           </div>
         </form>
       </div>
