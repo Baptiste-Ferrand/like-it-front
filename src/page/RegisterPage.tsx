@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from '../utils/auth/axiosInstance';
+import { useAuth } from '../context/AuthContext';
 import { setToken } from '../utils/auth/token';
 
 export default function RegisterPage() {
@@ -15,6 +16,7 @@ export default function RegisterPage() {
   const isPasswordValid = password.length >= 10;
   const passwordsMatch = password === repeatPassword;
   const isFormValid = isEmailValid && isPasswordValid && passwordsMatch && termsAccepted;
+  const { setAuthenticated } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,6 +30,7 @@ export default function RegisterPage() {
       const token = response.data?.access_token;
       if (token) {
         setToken(token);
+        setAuthenticated(true);
         navigate('/'); 
       }
     } catch (error) {

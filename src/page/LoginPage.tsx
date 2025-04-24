@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axiosInstance from '../utils/auth/axiosInstance';
+import { useAuth } from '../context/AuthContext';
 import { setToken } from '../utils/auth/token';
 
 export default function LoginPage() {
@@ -12,6 +13,7 @@ export default function LoginPage() {
   const isEmailValid = validateEmail(email);
   const isPasswordValid = password.length >= 10;
   const isFormValid = isEmailValid && isPasswordValid;
+  const { setAuthenticated } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,6 +26,7 @@ export default function LoginPage() {
       const token = response.data?.access_token;
       if (token) {
         setToken(token);
+        setAuthenticated(true);
         navigate('/');
       }
     } catch (error) {
